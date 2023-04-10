@@ -23,7 +23,8 @@ rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
 # Print results.
 for row in rows:
-    st.write(f"{row.name} has a :{row.pet}:")
+    #st.write(f"{row.name} has a :{row.pet}:")
+    st.write(row)
 
 
 Year_List=[2,3,4,5,6,7,8,9,10]
