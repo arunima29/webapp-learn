@@ -1,6 +1,29 @@
 import streamlit as st
-
 import pandas as pd
+from google.oauth2 import service_account
+from gsheetsdb import connect
+
+# Create a connection object.
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"],
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ],
+)
+conn = connect(credentials=credentials)
+
+# Perform SQL query on the Google Sheet.
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
+
+sheet_url = st.secrets["private_gsheets_url"]
+rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+# Print results.
+for row in rows:
+    st.write(f"{row.name} has a :{row.pet}:")
 
 
 Year_List=[2,3,4,5,6,7,8,9,10]
@@ -8,7 +31,7 @@ Year_List=[2,3,4,5,6,7,8,9,10]
 
 st.write("""
 
-# Compound Interest Calculator!
+# Welcome to AK Professional Coaching Application!
 
 """)
 
